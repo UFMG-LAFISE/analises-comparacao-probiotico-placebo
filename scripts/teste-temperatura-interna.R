@@ -1,4 +1,5 @@
-## MODELO LINEAR MISTO - media da temperatura da pele
+## MODELO LINEAR MISTO - temperatura interna
+
 #-------------------------------------------------------------------------------
 library(readxl)
 library(dplyr)
@@ -9,15 +10,14 @@ library(lmerTest)
 library(emmeans)
 library(performance)
 library(ggplot2)
-library(see)
 #-------------------------------------------------------------------------------
-arquivo <- "media-temp-pele.xlsx"
+arquivo <- "dados/temp-interna.xlsx"
 
 # LEITURA DAS PLANILHAS
-pla_pre  <- read_excel(arquivo, sheet = "PLA-preintervencao")
-pla_pos  <- read_excel(arquivo, sheet = "PLA-posintervencao")
-supl_pre <- read_excel(arquivo, sheet = "SULP-preintervencao")
-supl_pos <- read_excel(arquivo, sheet = "SULP-posintervencao")
+pla_pre  <- read_excel(arquivo, sheet = "PLC-preintervencao")
+pla_pos  <- read_excel(arquivo, sheet = "PLC-posintervencao")
+supl_pre <- read_excel(arquivo, sheet = "SUPL-preintervencao")
+supl_pos <- read_excel(arquivo, sheet = "SUPL-posintervencao")
 
 ## ORGANIZAÇÃO DOS DADOS
 organizar <- function(df, grupo, momento){
@@ -93,8 +93,7 @@ modelo <- lmer(
 )
 summary(modelo)
 
-
-ggsave("pressupostos-modelo-ct.png", plot = plot(check_model(modelo)), width = 10, height = 8)
+check_model(modelo)
 
 anova(modelo)
 

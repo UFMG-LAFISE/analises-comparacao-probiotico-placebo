@@ -1,4 +1,5 @@
-## MODELO LINEAR MISTO - FC
+## MODELO LINEAR MISTO - temperatura pele
+
 #-------------------------------------------------------------------------------
 library(readxl)
 library(dplyr)
@@ -10,7 +11,7 @@ library(emmeans)
 library(performance)
 library(ggplot2)
 #-------------------------------------------------------------------------------
-arquivo <- "FC.xlsx"
+arquivo <- "dados/temp-pele.xlsx"
 
 # LEITURA DAS PLANILHAS
 pla_pre  <- read_excel(arquivo, sheet = "PLC-preintervencao")
@@ -79,6 +80,7 @@ dados <- dados |>
   filter(Tempo != '0') |>
   mutate(Tempo = droplevels(Tempo))
 
+
 # MODELO LINEAR MISTO
 
 modelo <- lmer(
@@ -92,7 +94,7 @@ modelo <- lmer(
 )
 summary(modelo)
 
-check_model(modelo, panel = FALSE)
+check_model(modelo)
 
 anova(modelo)
 

@@ -12,7 +12,7 @@ library(emmeans)
 library(performance)
 library(ggplot2)
 #-------------------------------------------------------------------------------
-arquivo <- "pacing.xlsx"
+arquivo <- "dados/pacing.xlsx"
 
 # LEITURA DAS PLANILHAS
 pla_pre  <- read_excel(arquivo, sheet = "PLA-preintervencao")

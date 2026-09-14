@@ -1,5 +1,4 @@
-## MODELO LINEAR MISTO - temperatura pele
-
+## MODELO LINEAR MISTO - ST
 #-------------------------------------------------------------------------------
 library(readxl)
 library(dplyr)
@@ -11,13 +10,13 @@ library(emmeans)
 library(performance)
 library(ggplot2)
 #-------------------------------------------------------------------------------
-arquivo <- "temp-pele.xlsx"
+arquivo <- "dados/ST.xlsx"
 
 # LEITURA DAS PLANILHAS
-pla_pre  <- read_excel(arquivo, sheet = "PLC-preintervencao")
-pla_pos  <- read_excel(arquivo, sheet = "PLC-posintervencao")
-supl_pre <- read_excel(arquivo, sheet = "SUPL-preintervencao")
-supl_pos <- read_excel(arquivo, sheet = "SUPL-posintervencao")
+pla_pre  <- read_excel(arquivo, sheet = "PLA-preintervencao")
+pla_pos  <- read_excel(arquivo, sheet = "PLA-posintervencao")
+supl_pre <- read_excel(arquivo, sheet = "SULP-preintervencao")
+supl_pos <- read_excel(arquivo, sheet = "SULP-posintervencao")
 
 ## ORGANIZAÇÃO DOS DADOS
 organizar <- function(df, grupo, momento){
@@ -73,13 +72,12 @@ dados$Tempo <- factor(
     "9",
     "10"
   )
-)
+) 
 
 # REMOVER TEMPO 0 (BASELINE) DA ANALISE
 dados <- dados |> 
   filter(Tempo != '0') |>
   mutate(Tempo = droplevels(Tempo))
-
 
 # MODELO LINEAR MISTO
 

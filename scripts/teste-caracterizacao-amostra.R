@@ -4,7 +4,7 @@
 library(readxl)
 library(dplyr)
 #-------------------------------------------------------------------------------
-arquivo <- "caracterizacao-amostra.xlsx"
+arquivo <- "dados/caracterizacao-amostra.xlsx"
 
 # LEITURA DAS PLANILHAS
 pla  <- read_excel(arquivo, sheet = "CARACTERIZACAO-AMOSTRA-PLA")
@@ -42,4 +42,4 @@ resumo <- lapply(variaveis, function(v) {
 resumo <- bind_rows(resumo)
 print(resumo)
 
-write.csv(resumo, "caracterizacao-amostra-resultado.csv", row.names = FALSE)
+write.csv(resumo, "relatorios/caracterizacao-amostra-resultado.csv", row.names = FALSE)

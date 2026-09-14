@@ -1,4 +1,4 @@
-## MODELO LINEAR MISTO - ST
+## MODELO LINEAR MISTO - CT
 #-------------------------------------------------------------------------------
 library(readxl)
 library(dplyr)
@@ -9,8 +9,9 @@ library(lmerTest)
 library(emmeans)
 library(performance)
 library(ggplot2)
+library(see)
 #-------------------------------------------------------------------------------
-arquivo <- "ST.xlsx"
+arquivo <- "dados/CT.xlsx"
 
 # LEITURA DAS PLANILHAS
 pla_pre  <- read_excel(arquivo, sheet = "PLA-preintervencao")
@@ -72,7 +73,7 @@ dados$Tempo <- factor(
     "9",
     "10"
   )
-) 
+)
 
 # REMOVER TEMPO 0 (BASELINE) DA ANALISE
 dados <- dados |> 
@@ -92,7 +93,8 @@ modelo <- lmer(
 )
 summary(modelo)
 
-check_model(modelo)
+
+ggsave("pressupostos-modelo-ct.png", plot = plot(check_model(modelo)), width = 10, height = 8)
 
 anova(modelo)
 

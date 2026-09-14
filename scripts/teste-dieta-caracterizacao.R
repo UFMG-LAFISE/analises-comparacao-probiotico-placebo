@@ -12,7 +12,7 @@ library(ggplot2)
 library(see)
 library(patchwork)
 #-------------------------------------------------------------------------------
-arquivo <- "dieta-caracterizacao.xlsx"
+arquivo <- "dados/dieta-caracterizacao.xlsx"
 
 # LEITURA DAS PLANILHAS
 pla_pre  <- read_excel(arquivo, sheet = "PLA-preintervencao")

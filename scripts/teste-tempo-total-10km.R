@@ -12,7 +12,7 @@ library(ggplot2)
 library(see)
 library(patchwork)
 #-------------------------------------------------------------------------------
-arquivo <- "tempo-total-10km.xlsx"
+arquivo <- "dados/tempo-total-10km.xlsx"
 
 # LEITURA DAS PLANILHAS
 # obs.: a aba pós-intervenção do PLA esta grafada "PLA-posintervecao" (sem o "n")

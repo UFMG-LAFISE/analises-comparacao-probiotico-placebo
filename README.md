@@ -14,6 +14,18 @@ As variáveis dependentes foram coletadas em diferentes momentos, dependendo do 
 
 Essa variação na estrutura de coleta é o motivo de a nomenclatura dos fatores `Momento` e `Tempo` mudar de significado entre blocos de variáveis. Isso está detalhado na seção "Abordagem estatística" abaixo e documentado no início de cada script.
 
+## Estrutura de pastas
+
+O repositório está organizado em três pastas principais, além de duas pastas de imagens:
+
+- `dados/`: todas as planilhas `.xlsx` e o arquivo `.csv` de entrada, com os dados brutos usados pelos scripts.
+- `scripts/`: todos os scripts `teste-*.R` de análise estatística.
+- `relatorios/`: o relatório consolidado (`.md` e `.pdf`), os arquivos de post hoc do bloco 1, o rascunho de texto para artigo científico, e o resultado numérico da caracterização da amostra.
+- `graficos-relatorio/`: gráficos de pressupostos e de resultado das dezenove variáveis originalmente incluídas no relatório consolidado, citados no texto da seção de anexos do relatório. Fica na raiz do repositório, não dentro de `relatorios/`, porque é referenciada assim no texto do relatório.
+- `images/`: capturas de tela usadas em uma versão anterior do relatório.
+
+Os scripts em `scripts/` assumem que são executados a partir da raiz do repositório (não de dentro da própria pasta `scripts/`), e leem os dados usando caminhos relativos como `dados/CT.xlsx`. Os gráficos que cada script gera ao rodar são salvos diretamente na raiz do repositório, não dentro de `scripts/` nem de `dados/`. Isso está detalhado na seção "Como reproduzir as análises" abaixo.
+
 ## Estrutura do repositório
 
 ### Bloco 1: variáveis fisiológicas e perceptivas medidas ao longo do percurso
@@ -22,14 +34,14 @@ Cada uma destas variáveis foi registrada a cada 1 km da corrida, nos dois perí
 
 | Script | Planilha de dados | Variável |
 |---|---|---|
-| teste-ct.R | CT.xlsx | CT (conforto térmico) |
-| teste-fc.R | FC.xlsx | Frequência cardíaca |
-| teste-pacing.R | pacing.xlsx | Ritmo de corrida (pacing) |
-| teste-pse.R | PSE.xlsx | Percepção subjetiva de esforço |
-| teste-st.R | ST.xlsx | Sensação térmica |
-| teste-temperatura-interna.R | temp-interna.xlsx | Temperatura interna |
-| teste-temperatura-pele.R | temp-pele.xlsx | Temperatura de pele |
-| teste-temp-pele.R | media-temp-pele.xlsx | Média da temperatura de pele |
+| scripts/teste-ct.R | dados/CT.xlsx | CT (conforto térmico) |
+| scripts/teste-fc.R | dados/FC.xlsx | Frequência cardíaca |
+| scripts/teste-pacing.R | dados/pacing.xlsx | Ritmo de corrida (pacing) |
+| scripts/teste-pse.R | dados/PSE.xlsx | Percepção subjetiva de esforço |
+| scripts/teste-st.R | dados/ST.xlsx | Sensação térmica |
+| scripts/teste-temperatura-interna.R | dados/temp-interna.xlsx | Temperatura interna |
+| scripts/teste-temperatura-pele.R | dados/temp-pele.xlsx | Temperatura de pele |
+| scripts/teste-temp-pele.R | dados/media-temp-pele.xlsx | Média da temperatura de pele |
 
 ### Bloco 2: marcadores de equilíbrio hídrico medidos antes e depois da corrida
 
@@ -37,7 +49,7 @@ Estas variáveis foram registradas imediatamente antes e imediatamente depois da
 
 | Script | Planilha de dados | Variáveis |
 |---|---|---|
-| teste-equilibrio-eletrolitico.R | equilibrio-eletrolitico.xlsx | Massa corporal, GEU (gravidade específica da urina), coloração da urina |
+| scripts/teste-equilibrio-eletrolitico.R | dados/equilibrio-eletrolitico.xlsx | Massa corporal, GEU (gravidade específica da urina), coloração da urina |
 
 ### Bloco 3: marcadores hematológicos
 
@@ -45,7 +57,7 @@ Mesma convenção de `Momento` e `Tempo` do bloco 2.
 
 | Script | Planilha de dados | Variáveis |
 |---|---|---|
-| teste-sangue.R | sangue.xlsx | HGB (hemoglobina), HCT (hematócrito) |
+| scripts/teste-sangue.R | dados/sangue.xlsx | HGB (hemoglobina), HCT (hematócrito) |
 
 ### Bloco 4: balanço hídrico e desempenho com medida única por sessão
 
@@ -53,8 +65,8 @@ Estas variáveis têm um único valor por sessão de corrida (não há distinç�
 
 | Script | Planilha de dados | Variáveis |
 |---|---|---|
-| teste-equilibrio-eletrolitico2.R | equilibrio-eletrolitico.xlsx | Variação de massa corporal em kg, variação de massa corporal em percentual, líquido ingerido, sudorese total, taxa de sudorese |
-| teste-tempo-total-10km.R | tempo-total-10km.xlsx | Tempo total para completar os 10 km |
+| scripts/teste-equilibrio-eletrolitico2.R | dados/equilibrio-eletrolitico.xlsx | Variação de massa corporal em kg, variação de massa corporal em percentual, líquido ingerido, sudorese total, taxa de sudorese |
+| scripts/teste-tempo-total-10km.R | dados/tempo-total-10km.xlsx | Tempo total para completar os 10 km |
 
 ### Bloco 5: desempenho cognitivo, teste Flanker
 
@@ -62,9 +74,9 @@ Registrado antes e depois da corrida de 10 km, nos dois períodos de intervenç�
 
 | Script | Planilha de dados | Variáveis |
 |---|---|---|
-| teste-flanker.R | resultados-flanker-brutos.csv | Acurácia geral, tempo de reação geral, e acurácia/tempo de reação desagregados por congruência (congruente, incongruente) e por troca de tarefa (com troca, sem troca), totalizando 10 variáveis |
+| scripts/teste-flanker.R | dados/resultados-flanker-brutos.csv | Acurácia geral, tempo de reação geral, e acurácia/tempo de reação desagregados por congruência (congruente, incongruente) e por troca de tarefa (com troca, sem troca), totalizando 10 variáveis |
 
-O arquivo `resultados-flanker-brutos.csv` traz o grupo codificado como A/B por cegamento do estudo. O script confere e converte automaticamente essa codificação para PLA/SUPL, usando o identificador de participante como referência, e interrompe a execução com um erro claro caso a contagem de participantes por grupo não bata com o esperado.
+O arquivo `dados/resultados-flanker-brutos.csv` traz o grupo codificado como A/B por cegamento do estudo. O script confere e converte automaticamente essa codificação para PLA/SUPL, usando o identificador de participante como referência, e interrompe a execução com um erro claro caso a contagem de participantes por grupo não bata com o esperado.
 
 ### Bloco 6: caracterização dietética
 
@@ -72,7 +84,7 @@ Uma única medida por período de intervenção (mesmo padrão do bloco 4, apena
 
 | Script | Planilha de dados | Variáveis |
 |---|---|---|
-| teste-dieta-caracterizacao.R | dieta-caracterizacao.xlsx | Proteínas em gramas e em percentual, carboidratos em gramas e em percentual, lipídeos em gramas e em percentual, consumo energético total em kcal |
+| scripts/teste-dieta-caracterizacao.R | dados/dieta-caracterizacao.xlsx | Proteínas em gramas e em percentual, carboidratos em gramas e em percentual, lipídeos em gramas e em percentual, consumo energético total em kcal |
 
 ### Caracterização da amostra
 
@@ -80,18 +92,18 @@ Comparação de características basais entre os grupos, feita por teste t de We
 
 | Script | Planilha de dados | Variáveis |
 |---|---|---|
-| teste-caracterizacao-amostra.R | caracterizacao-amostra.xlsx | Idade, massa corporal, estatura, percentual de gordura corporal, VO2max |
+| scripts/teste-caracterizacao-amostra.R | dados/caracterizacao-amostra.xlsx | Idade, massa corporal, estatura, percentual de gordura corporal, VO2max |
 
-O resultado numérico também fica salvo em `caracterizacao-amostra-resultado.csv` após rodar o script.
+O resultado numérico também fica salvo em `relatorios/caracterizacao-amostra-resultado.csv` após rodar o script.
 
 ### Outros arquivos
 
-- `template.xlsx`: modelo em branco usado como referência de formatação ao preparar novas planilhas de dados, não é uma planilha analisada.
-- `relatorio-analises-gerado-por-IA.md`: relatório consolidado com os resultados de todas as análises acima, incluindo tabelas de médias e desvios padrão, tabelas de valores de p, e a interpretação em texto de cada variável. É o principal documento de referência deste repositório.
-- `ralatorio-estatistico-barbara.pdf`: versão em PDF do relatório acima, gerada a partir do arquivo `.md`.
-- `posthoc-tempo-distancia.md` e `posthoc-tempo-distancia.pdf`: comparações par a par entre todos os trechos de 1 km do bloco 1, feitas separadamente para cada grupo (PLA e SUPL).
-- `posthoc-tempo-distancia-grupos-combinados.md` e `posthoc-tempo-distancia-grupos-combinados.pdf`: as mesmas comparações par a par entre trechos de 1 km, mas com os dois grupos combinados em uma única análise.
-- `statistical-analysis.docx`: rascunho de texto em inglês da seção de análise estatística para uso em artigo científico.
+- `dados/template.xlsx`: modelo em branco usado como referência de formatação ao preparar novas planilhas de dados, não é uma planilha analisada.
+- `relatorios/relatorio-analises-gerado-por-IA.md`: relatório consolidado com os resultados de todas as análises acima, incluindo tabelas de médias e desvios padrão, tabelas de valores de p, e a interpretação em texto de cada variável. É o principal documento de referência deste repositório.
+- `relatorios/ralatorio-estatistico-barbara.pdf`: versão em PDF do relatório acima, gerada a partir do arquivo `.md`.
+- `relatorios/posthoc-tempo-distancia.md` e `relatorios/posthoc-tempo-distancia.pdf`: comparações par a par entre todos os trechos de 1 km do bloco 1, feitas separadamente para cada grupo (PLA e SUPL).
+- `relatorios/posthoc-tempo-distancia-grupos-combinados.md` e `relatorios/posthoc-tempo-distancia-grupos-combinados.pdf`: as mesmas comparações par a par entre trechos de 1 km, mas com os dois grupos combinados em uma única análise.
+- `relatorios/statistical-analysis.docx`: rascunho de texto em inglês da seção de análise estatística para uso em artigo científico.
 - `graficos-relatorio/`: gráficos de pressupostos do modelo (`pressupostos-<variavel>.png`) e gráficos de resultado (`resultado-<variavel>.png`) das dezenove variáveis originalmente incluídas no relatório consolidado, citados no texto da seção de anexos do relatório.
 - `images/`: capturas de tela usadas em uma versão anterior do relatório.
 
@@ -122,16 +134,16 @@ Os pressupostos de cada modelo (linearidade, homogeneidade de variância, normal
 
 É necessário ter o R instalado, junto com os seguintes pacotes: `readxl`, `readr`, `dplyr`, `tidyr`, `afex`, `lme4`, `lmerTest`, `emmeans`, `performance`, `ggplot2`, `see`, `patchwork`.
 
-Cada script `teste-*.R` é independente e pode ser rodado sozinho a partir da raiz do repositório, por exemplo:
+Cada script em `scripts/teste-*.R` é independente e pode ser rodado sozinho, mas precisa ser executado a partir da raiz do repositório (não de dentro da pasta `scripts/`), porque o caminho até os dados dentro do script é escrito como `dados/<arquivo>`. Por exemplo, estando na raiz do repositório:
 
 ```
-Rscript teste-ct.R
+Rscript scripts/teste-ct.R
 ```
 
-Ao rodar, cada script imprime no console o resumo do modelo, a tabela de ANOVA, as médias ajustadas e as comparações post hoc, além de salvar dois tipos de gráfico na raiz do repositório: um painel de pressupostos do modelo (`pressupostos-modelo-<variavel>.png`) e um ou mais gráficos das médias ajustadas (`grafico-<variavel>-*.png`). Esses arquivos gerados não ficam versionados neste repositório (ver `.gitignore`), já que são reproduzíveis a qualquer momento rodando o script correspondente novamente.
+Ao rodar, cada script imprime no console o resumo do modelo, a tabela de ANOVA, as médias ajustadas e as comparações post hoc, além de salvar dois tipos de gráfico diretamente na raiz do repositório (não dentro de `scripts/` nem de `dados/`): um painel de pressupostos do modelo (`pressupostos-modelo-<variavel>.png`) e um ou mais gráficos das médias ajustadas (`grafico-<variavel>-*.png`). Esses arquivos gerados não ficam versionados neste repositório (ver `.gitignore`), já que são reproduzíveis a qualquer momento rodando o script correspondente novamente.
 
 Observação sobre um problema conhecido do ambiente: em algumas instalações do pacote `lme4`, a chamada `print(summary(modelo))` pode falhar com o erro `could not find function "%||%"`, por uma incompatibilidade interna do pacote na formatação da tabela de efeitos aleatórios. Os scripts mais recentes deste repositório (a partir de `teste-flanker.R`) já contornam esse problema imprimindo `coef(summary(modelo))` e `as.data.frame(VarCorr(modelo))` separadamente em vez de `summary(modelo)` diretamente, o que produz a mesma informação sem acionar o trecho de código com o problema.
 
 ## Relatório final
 
-O documento `relatorio-analises-gerado-por-IA.md` é o relatório consolidado com os resultados de todas as variáveis analisadas neste repositório, organizado em seções: introdução, método, resultados por bloco de variáveis (cada variável com tabela de médias e desvios padrão, tabela de valores de p, e um parágrafo de interpretação), síntese geral dos achados, e anexos com a verificação de pressupostos dos modelos. A versão em PDF (`ralatorio-estatistico-barbara.pdf`) é gerada a partir deste arquivo `.md` e deve ser atualizada sempre que o `.md` for alterado, para os dois arquivos não ficarem desatualizados um em relação ao outro.
+O documento `relatorios/relatorio-analises-gerado-por-IA.md` é o relatório consolidado com os resultados de todas as variáveis analisadas neste repositório, organizado em seções: introdução, método, resultados por bloco de variáveis (cada variável com tabela de médias e desvios padrão, tabela de valores de p, e um parágrafo de interpretação), síntese geral dos achados, e anexos com a verificação de pressupostos dos modelos. A versão em PDF (`relatorios/ralatorio-estatistico-barbara.pdf`) é gerada a partir deste arquivo `.md` e deve ser atualizada sempre que o `.md` for alterado, para os dois arquivos não ficarem desatualizados um em relação ao outro.

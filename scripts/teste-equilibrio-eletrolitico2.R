@@ -14,7 +14,7 @@ library(ggplot2)
 library(see)
 library(patchwork)
 #-------------------------------------------------------------------------------
-arquivo <- "equilibrio-eletrolitico.xlsx"
+arquivo <- "dados/equilibrio-eletrolitico.xlsx"
 
 # LEITURA DAS PLANILHAS
 pla_pre  <- read_excel(arquivo, sheet = "PLA-preintervencao")

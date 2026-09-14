@@ -1,4 +1,4 @@
-## MODELO LINEAR MISTO - CT
+## MODELO LINEAR MISTO - media da temperatura da pele
 #-------------------------------------------------------------------------------
 library(readxl)
 library(dplyr)
@@ -11,7 +11,7 @@ library(performance)
 library(ggplot2)
 library(see)
 #-------------------------------------------------------------------------------
-arquivo <- "CT.xlsx"
+arquivo <- "dados/media-temp-pele.xlsx"
 
 # LEITURA DAS PLANILHAS
 pla_pre  <- read_excel(arquivo, sheet = "PLA-preintervencao")

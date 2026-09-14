@@ -1,5 +1,4 @@
-## MODELO LINEAR MISTO - temperatura interna
-
+## MODELO LINEAR MISTO - PSE
 #-------------------------------------------------------------------------------
 library(readxl)
 library(dplyr)
@@ -11,13 +10,13 @@ library(emmeans)
 library(performance)
 library(ggplot2)
 #-------------------------------------------------------------------------------
-arquivo <- "temp-interna.xlsx"
+arquivo <- "dados/PSE.xlsx"
 
 # LEITURA DAS PLANILHAS
-pla_pre  <- read_excel(arquivo, sheet = "PLC-preintervencao")
-pla_pos  <- read_excel(arquivo, sheet = "PLC-posintervencao")
-supl_pre <- read_excel(arquivo, sheet = "SUPL-preintervencao")
-supl_pos <- read_excel(arquivo, sheet = "SUPL-posintervencao")
+pla_pre  <- read_excel(arquivo, sheet = "PLA-preintervencao")
+pla_pos  <- read_excel(arquivo, sheet = "PLA-posintervencao")
+supl_pre <- read_excel(arquivo, sheet = "SULP-preintervencao")
+supl_pos <- read_excel(arquivo, sheet = "SULP-posintervencao")
 
 ## ORGANIZAÇÃO DOS DADOS
 organizar <- function(df, grupo, momento){
@@ -79,6 +78,7 @@ dados$Tempo <- factor(
 dados <- dados |> 
   filter(Tempo != '0') |>
   mutate(Tempo = droplevels(Tempo))
+
 
 # MODELO LINEAR MISTO
 

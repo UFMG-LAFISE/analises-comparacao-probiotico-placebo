@@ -14,7 +14,7 @@ library(ggplot2)
 library(see)
 library(patchwork)
 #-------------------------------------------------------------------------------
-arquivo <- "resultados-flanker-brutos.csv"
+arquivo <- "dados/resultados-flanker-brutos.csv"
 
 dados_brutos <- read_csv(arquivo, show_col_types = FALSE)
 

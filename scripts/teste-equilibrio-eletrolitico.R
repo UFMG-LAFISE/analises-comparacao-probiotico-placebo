@@ -1,5 +1,5 @@
-## MODELO LINEAR MISTO - SANGUE
-## (HGB, HCT)
+## MODELO LINEAR MISTO - EQUILIBRIO ELETROLITICO
+## (massa corporal, GEU, coloracao da urina)
 #-------------------------------------------------------------------------------
 library(readxl)
 library(dplyr)
@@ -13,17 +13,17 @@ library(ggplot2)
 library(see)
 library(patchwork)
 #-------------------------------------------------------------------------------
-arquivo <- "sangue.xlsx"
+arquivo <- "dados/equilibrio-eletrolitico.xlsx"
 
 # LEITURA DAS PLANILHAS
 pla_pre  <- read_excel(arquivo, sheet = "PLA-preintervencao")
 pla_pos  <- read_excel(arquivo, sheet = "PLA-posintervencao")
-supl_pre <- read_excel(arquivo, sheet = "SULP-preintervencao")
-supl_pos <- read_excel(arquivo, sheet = "SULP-posintervencao")
+supl_pre <- read_excel(arquivo, sheet = "SUPL-preintervencao")
+supl_pos <- read_excel(arquivo, sheet = "SUPL-posintervencao")
 
 ## ORGANIZAÇÃO DOS DADOS
-## Mesmo padrao de equilibrio-eletrolitico.xlsx: cada aba ja contem as linhas
-## "pre10km" e "pos10km" na coluna 1. Por isso, aqui:
+## Nesta planilha (diferente das demais), cada aba ja contem as linhas
+## "pre" e "pos" da corrida de 10 km na coluna 1. Por isso, aqui:
 ##   - Grupo   = PLA / SUPL            -> qual conjunto de abas
 ##   - Tempo   = Pre / Pos intervencao -> qual aba (preintervencao / posintervencao)
 ##   - Momento = Pre / Pos 10 km       -> qual linha dentro da aba
@@ -48,8 +48,8 @@ organizar <- function(df, rotulos_pre, rotulos_pos, grupo, tempo) {
 }
 
 ## FUNÇÃO AUXILIAR: MONTA "dados", RODA O MODELO E IMPRIME TODAS AS SAÍDAS
-## nome_variavel = rótulo legível usado nos títulos dos gráficos
-## slug          = versão curta sem espaços usada nos nomes dos arquivos .png
+## nome_variavel = rótulo legível usado nos títulos dos gráficos (ex.: "Massa Corporal (kg)")
+## slug          = versão curta sem espaços usada nos nomes dos arquivos .png (ex.: "massa-corporal")
 rodar_analise <- function(rotulos_pre, rotulos_pos, nome_variavel, slug) {
 
   dados <- bind_rows(
@@ -160,21 +160,34 @@ rodar_analise <- function(rotulos_pre, rotulos_pos, nome_variavel, slug) {
 }
 
 #-------------------------------------------------------------------------------
-## HGB (HEMOGLOBINA)
+## MASSA CORPORAL
+## obs.: a planilha grafa a linha "pre" como "Massa coporal pré (kg)" (sem o r) -
+## os dois rótulos ficam listados abaixo para o filtro funcionar mesmo se o
+## erro de digitação for corrigido na planilha no futuro.
 #-------------------------------------------------------------------------------
-modelo_hgb <- rodar_analise(
-  rotulos_pre    = "HGB-pre10km",
-  rotulos_pos    = "HGB-pos10km",
-  nome_variavel  = "HGB (Hemoglobina)",
-  slug           = "hgb"
+modelo_massa_corporal <- rodar_analise(
+  rotulos_pre    = c("Massa coporal pré (kg)", "Massa corporal pré (kg)"),
+  rotulos_pos    = "Massa corporal pós (kg)",
+  nome_variavel  = "Massa Corporal (kg)",
+  slug           = "massa-corporal"
 )
 
 #-------------------------------------------------------------------------------
-## HCT (HEMATOCRITO)
+## GEU (GRAVIDADE ESPECÍFICA DA URINA)
 #-------------------------------------------------------------------------------
-modelo_hct <- rodar_analise(
-  rotulos_pre    = "HCT-pre10km",
-  rotulos_pos    = "HCT-pos10km",
-  nome_variavel  = "HCT (Hematocrito)",
-  slug           = "hct"
+modelo_geu <- rodar_analise(
+  rotulos_pre    = "GEU pré",
+  rotulos_pos    = "GEU pós",
+  nome_variavel  = "GEU (Gravidade Especifica da Urina)",
+  slug           = "geu"
+)
+
+#-------------------------------------------------------------------------------
+## COLORAÇÃO DA URINA
+#-------------------------------------------------------------------------------
+modelo_coloracao_urina <- rodar_analise(
+  rotulos_pre    = "Coloração urina pré",
+  rotulos_pos    = "Coloração urina pós",
+  nome_variavel  = "Coloracao da Urina",
+  slug           = "coloracao-urina"
 )
