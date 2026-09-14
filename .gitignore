@@ -1,0 +1,19 @@
+# Estado de sessao do R / RStudio. Nao e resultado de analise, e especifico
+# de cada maquina, e o RStudio carrega .RData automaticamente ao abrir a
+# pasta, o que pode confundir a sessao de outra pessoa com objetos antigos.
+.RData
+.Rhistory
+.Rproj.user/
+
+# Graficos gerados pelos scripts teste-*.R na raiz do projeto
+# (pressupostos-modelo-<variavel>.png e grafico-<variavel>-*.png).
+# Sao reproduziveis rodando o script correspondente, entao versiona-los
+# so criaria diferencas binarias a cada nova execucao. Os graficos que ja
+# fazem parte do relatorio consolidado ficam em graficos-relatorio/ e
+# continuam versionados normalmente.
+/pressupostos-modelo-*.png
+/grafico-*.png
+
+# Arquivo de saida padrao do R quando nenhum dispositivo grafico e aberto
+# explicitamente. Aparece as vezes como sobra de execucao no terminal.
+Rplots.pdf
