@@ -23,6 +23,7 @@ O repositório está organizado em três pastas principais, além de duas pastas
 - `relatorios/`: o relatório consolidado (`.md` e `.pdf`), os arquivos de post hoc do bloco 1, o rascunho de texto para artigo científico, e o resultado numérico da caracterização da amostra.
 - `graficos-relatorio/`: gráficos de pressupostos e de resultado das dezenove variáveis originalmente incluídas no relatório consolidado, citados no texto da seção de anexos do relatório. Fica na raiz do repositório, não dentro de `relatorios/`, porque é referenciada assim no texto do relatório.
 - `images/`: capturas de tela usadas em uma versão anterior do relatório.
+- `learning/`: exemplos didáticos com dados fictícios, para quem quer aprender a fazer o mesmo tipo de análise usada neste repositório sem depender dos dados reais do estudo. Tem seu próprio README explicando os dois exemplos disponíveis (2 vias e 3 vias).
 
 Os scripts em `scripts/` assumem que são executados a partir da raiz do repositório (não de dentro da própria pasta `scripts/`), e leem os dados usando caminhos relativos como `dados/CT.xlsx`. Os gráficos que cada script gera ao rodar são salvos diretamente na raiz do repositório, não dentro de `scripts/` nem de `dados/`. Isso está detalhado na seção "Como reproduzir as análises" abaixo.
 
