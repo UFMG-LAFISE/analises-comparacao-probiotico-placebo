@@ -1,19 +1,10 @@
 ## EXEMPLO DIDATICO - MODELO LINEAR MISTO COMO ALTERNATIVA A UMA ANOVA DE 2 VIAS
-## (fatores Grupo e Momento, sem um terceiro fator)
+## (fatores Grupo e Momento)
 ##
 ## Este script usa dados FICTICIOS, criados dentro do proprio script, so para
-## ensinar a estrutura de analise usada neste laboratorio. Ele nao le nenhum
-## arquivo da pasta dados/ deste repositorio e pode ser rodado sozinho, de
+## ensinar a estrutura de analise. Ele nao le nenhum arquivo da pasta dados/ deste 
+## repositorio e pode ser rodado sozinho, de
 ## qualquer lugar, sem depender do resto do projeto.
-##
-## Quando usar este modelo de 2 vias (sem fator Tempo): quando cada
-## participante tem uma unica medida por Momento, por exemplo, um valor
-## antes da intervencao e um valor depois da intervencao, sem uma terceira
-## dimensao repetida dentro do mesmo Momento (como varios trechos de um
-## percurso, ou varias tentativas de uma tarefa). Se os seus dados tem essa
-## terceira dimensao, veja o exemplo em exemplo-anova-3way.R, na mesma pasta.
-#-------------------------------------------------------------------------------
-
 
 ## PACOTES NECESSARIOS ---------------------------------------------------------
 
@@ -44,9 +35,8 @@ library(ggplot2)
 library(see)
 library(patchwork)
 
-
 #-------------------------------------------------------------------------------
-## 1. CRIAR DADOS FICTICIOS -----------------------------------------------------
+## 1. CRIAR DADOS FICTICIOS 
 ## Em uma analise real, esta secao seria substituida pela leitura de uma
 ## planilha de verdade, por exemplo com readxl::read_excel("dados/arquivo.xlsx"),
 ## do jeito que e feito nos scripts da pasta scripts/ deste repositorio. Aqui
@@ -106,7 +96,7 @@ dados <- dados |>
 
 
 #-------------------------------------------------------------------------------
-## 2. AJUSTAR OS TIPOS DAS COLUNAS (TRANSFORMAR EM FATORES) --------------------
+## 2. AJUSTAR OS TIPOS DAS COLUNAS (TRANSFORMAR EM FATORES) 
 ## O R precisa saber que Grupo, Momento e Participante sao variaveis
 ## categoricas (fatores), e nao texto livre ou numeros continuos, para o
 ## lmer() e o emmeans() interpretarem a formula corretamente.
@@ -127,14 +117,7 @@ dados$Participante <- factor(dados$Participante)
 
 
 #-------------------------------------------------------------------------------
-## 3. AJUSTAR O MODELO LINEAR MISTO ---------------------------------------------
-## Por que um modelo misto (LMM) em vez de uma ANOVA de medidas repetidas
-## classica? A ANOVA classica exige grupos de tamanho igual e nao aceita
-## dados faltantes (qualquer participante com uma medida faltando e
-## excluido inteiro da analise). O LMM lida bem com os dois problemas,
-## porque estima os efeitos por maxima verossimilhanca, aproveitando toda a
-## informacao disponivel, em vez de exigir uma tabela perfeitamente
-## retangular e balanceada.
+## 3. AJUSTAR O MODELO LINEAR MISTO
 
 modelo <- lmer(
   Valor ~ Grupo * Momento + (1 | Participante),
@@ -143,9 +126,7 @@ modelo <- lmer(
 # como ler a formula acima:
 #   Valor ~ Grupo * Momento
 #     "explique o Valor pelo Grupo, pelo Momento, e pela interacao entre os
-#     dois". Em R, "Grupo * Momento" e um atalho que expande sozinho para
-#     "Grupo + Momento + Grupo:Momento" (os dois efeitos principais mais a
-#     interacao entre eles)
+#     dois". 
 #   + (1 | Participante)
 #     "cada Participante tem o seu proprio ponto de partida (intercepto)".
 #     Isto modela o fato de que a mesma pessoa foi medida duas vezes (Pre e
@@ -167,23 +148,18 @@ print(as.data.frame(VarCorr(modelo)))
 
 
 #-------------------------------------------------------------------------------
-## 4. VERIFICAR OS PRESSUPOSTOS DO MODELO ---------------------------------------
-## Antes de interpretar os resultados, vale checar visualmente se o modelo
+## 4. VERIFICAR OS PRESSUPOSTOS DO MODELO
+## Antes de interpretar os resultados, devemos checar visualmente se o modelo
 ## esta bem ajustado: residuos aproximadamente normais, variancia
 ## homogenea entre os grupos, nenhuma observacao com influencia
 ## desproporcional sobre o resultado, e assim por diante.
 
 check_model(modelo)
 # este comando abre uma janela com um painel de graficos de diagnostico.
-# Se voce quiser salvar esse painel em um arquivo em vez de so exibi-lo na
-# tela, use ggsave() como e feito nos scripts da pasta scripts/ deste
-# repositorio, por exemplo:
-#   grafico_pressupostos <- plot(check_model(modelo))
-#   ggsave("meus-pressupostos.png", plot = grafico_pressupostos, width = 10, height = 8)
 
 
 #-------------------------------------------------------------------------------
-## 5. TABELA DE ANOVA (TESTE DE SIGNIFICANCIA DOS EFEITOS) ---------------------
+## 5. TABELA DE ANOVA (TESTE DE SIGNIFICANCIA DOS EFEITOS)
 ## Esta e a etapa que corresponde a "fazer a ANOVA": pegamos o modelo misto
 ## ja ajustado e testamos se cada efeito (Grupo, Momento, interacao) e
 ## estatisticamente significativo. Usamos soma de quadrados Tipo III
@@ -209,7 +185,7 @@ print(anova(modelo))
 
 
 #-------------------------------------------------------------------------------
-## 6. MEDIAS AJUSTADAS E COMPARACOES POST-HOC (EMMEANS) ------------------------
+## 6. MEDIAS AJUSTADAS E COMPARACOES POST-HOC (EMMEANS) 
 ## emmeans calcula as "estimated marginal means": as medias previstas pelo
 ## modelo para cada combinacao de Grupo e Momento, ja levando em conta toda
 ## a estrutura do modelo misto (nao e simplesmente a media bruta dos dados
@@ -242,7 +218,7 @@ print(pairs(comparacao_grupo_por_momento, adjust = "holm"))
 
 
 #-------------------------------------------------------------------------------
-## 7. GRAFICO DAS MEDIAS AJUSTADAS ----------------------------------------------
+## 7. GRAFICO DAS MEDIAS AJUSTADAS 
 ## emmip() desenha as medias ajustadas com barras de erro (intervalo de
 ## confianca de 95%), o que ajuda a visualizar a interacao entre Grupo e
 ## Momento de forma mais intuitiva do que so olhando a tabela de numeros.
@@ -261,7 +237,7 @@ print(grafico)
 
 
 #-------------------------------------------------------------------------------
-## PARA ADAPTAR ESTE SCRIPT PARA OS SEUS PROPRIOS DADOS -------------------------
+## PARA ADAPTAR ESTE SCRIPT PARA OS SEUS PROPRIOS DADOS
 ## 1. Troque a secao 1 (dados ficticios) por uma leitura de dados real, por
 ##    exemplo:
 ##      dados <- readxl::read_excel("dados/minha-planilha.xlsx")

@@ -5,22 +5,6 @@
 ## ensinar a estrutura de analise usada neste laboratorio. Ele nao le nenhum
 ## arquivo da pasta dados/ deste repositorio e pode ser rodado sozinho, de
 ## qualquer lugar, sem depender do resto do projeto.
-##
-## Quando usar este modelo de 3 vias: quando, alem do Grupo e do Momento, os
-## seus dados tem uma TERCEIRA dimensao medida repetidamente dentro do mesmo
-## Momento. Por exemplo: varios trechos de um percurso, varias tentativas de
-## uma tarefa, ou um segundo periodo de intervencao dentro do mesmo estudo.
-## Se os seus dados nao tem essa terceira dimensao (cada participante so tem
-## uma medida por Momento), o modelo de 2 vias e mais adequado: veja o
-## exemplo em exemplo-anova-2way.R, na mesma pasta.
-##
-## Neste exemplo, o terceiro fator se chama "Tempo" e tem so 2 niveis, para
-## manter a leitura simples. Na pratica, "Tempo" pode ter varios niveis (por
-## exemplo, 10 trechos de 1 km cada, como em alguns dos scripts da pasta
-## scripts/ deste repositorio); o codigo funciona do mesmo jeito, so muda a
-## lista de levels na secao 2 e o numero de linhas na tabela de resultados.
-#-------------------------------------------------------------------------------
-
 
 ## PACOTES NECESSARIOS ---------------------------------------------------------
 
@@ -54,7 +38,7 @@ library(patchwork)
 
 
 #-------------------------------------------------------------------------------
-## 1. CRIAR DADOS FICTICIOS -----------------------------------------------------
+## 1. CRIAR DADOS FICTICIOS
 ## Em uma analise real, esta secao seria substituida pela leitura de uma
 ## planilha de verdade, do jeito que e feito nos scripts da pasta scripts/
 ## deste repositorio. Aqui geramos os dados na mao, para o script funcionar
@@ -128,7 +112,7 @@ dados <- dados |>
 
 
 #-------------------------------------------------------------------------------
-## 2. AJUSTAR OS TIPOS DAS COLUNAS (TRANSFORMAR EM FATORES) --------------------
+## 2. AJUSTAR OS TIPOS DAS COLUNAS (TRANSFORMAR EM FATORES)
 ## O R precisa saber que Grupo, Momento, Tempo e Participante sao variaveis
 ## categoricas (fatores), e nao texto livre ou numeros continuos, para o
 ## lmer() e o emmeans() interpretarem a formula corretamente.
@@ -141,7 +125,7 @@ dados$Momento <- factor(dados$Momento, levels = c("Pre", "Pos"))
 
 # Tempo como fator. Se os seus dados tiverem mais de 2 niveis de Tempo (por
 # exemplo, varios trechos de um percurso), liste todos os niveis aqui, na
-# ordem que fizer sentido (por exemplo, c("0-1km", "1-2km", ..., "9-10km"))
+# ordem que fizer sentido (por exemplo, c("0-1km", "1-2km", ..., "9-10km")) # se não entendeu, veja as analises que foram feitos para o trabalho da barbara, lá eu usei essa estrutura explicada
 dados$Tempo <- factor(dados$Tempo, levels = niveis_tempo)
 
 # Participante como fator, so para o lmer() reconhecer como um agrupamento
@@ -151,14 +135,7 @@ dados$Participante <- factor(dados$Participante)
 
 
 #-------------------------------------------------------------------------------
-## 3. AJUSTAR O MODELO LINEAR MISTO ---------------------------------------------
-## Por que um modelo misto (LMM) em vez de uma ANOVA de medidas repetidas
-## classica? A ANOVA classica exige grupos de tamanho igual e nao aceita
-## dados faltantes (qualquer participante com uma medida faltando e
-## excluido inteiro da analise). O LMM lida bem com os dois problemas,
-## porque estima os efeitos por maxima verossimilhanca, aproveitando toda a
-## informacao disponivel, em vez de exigir uma tabela perfeitamente
-## retangular e balanceada.
+## 3. AJUSTAR O MODELO LINEAR MISTO
 
 modelo <- lmer(
   Valor ~ Grupo * Momento * Tempo + (1 | Participante),
@@ -167,11 +144,7 @@ modelo <- lmer(
 # como ler a formula acima:
 #   Valor ~ Grupo * Momento * Tempo
 #     "explique o Valor pelos tres fatores (Grupo, Momento, Tempo) e por
-#     todas as interacoes possiveis entre eles". Em R, "Grupo * Momento *
-#     Tempo" e um atalho que expande sozinho para:
-#       Grupo + Momento + Tempo                          (efeitos principais)
-#       + Grupo:Momento + Grupo:Tempo + Momento:Tempo     (interacoes de 2 fatores)
-#       + Grupo:Momento:Tempo                             (interacao dos 3 fatores)
+#     todas as interacoes possiveis entre eles".
 #   + (1 | Participante)
 #     "cada Participante tem o seu proprio ponto de partida (intercepto)".
 #     Isto modela o fato de que a mesma pessoa foi medida 4 vezes (uma para
@@ -186,14 +159,13 @@ modelo <- lmer(
 cat("\n=== Efeitos fixos (coeficientes do modelo) ===\n")
 print(coef(summary(modelo)))
 
-# imprime os efeitos aleatorios (o quanto os participantes variam entre si,
-# em media, e o quanto sobra de variancia nao explicada, o residuo)
+# imprime os efeitos aleatorios 
 cat("\n=== Efeitos aleatorios (variancia entre participantes e residuo) ===\n")
 print(as.data.frame(VarCorr(modelo)))
 
 
 #-------------------------------------------------------------------------------
-## 4. VERIFICAR OS PRESSUPOSTOS DO MODELO ---------------------------------------
+## 4. VERIFICAR OS PRESSUPOSTOS DO MODELO
 ## Antes de interpretar os resultados, vale checar visualmente se o modelo
 ## esta bem ajustado: residuos aproximadamente normais, variancia
 ## homogenea entre os grupos, nenhuma observacao com influencia
@@ -209,7 +181,7 @@ check_model(modelo)
 
 
 #-------------------------------------------------------------------------------
-## 5. TABELA DE ANOVA (TESTE DE SIGNIFICANCIA DOS EFEITOS) ---------------------
+## 5. TABELA DE ANOVA (TESTE DE SIGNIFICANCIA DOS EFEITOS) 
 ## Esta e a etapa que corresponde a "fazer a ANOVA": pegamos o modelo misto
 ## ja ajustado e testamos se cada efeito e estatisticamente significativo.
 ## Usamos soma de quadrados Tipo III (padrao quando o desenho tem
@@ -238,7 +210,7 @@ print(anova(modelo))
 
 
 #-------------------------------------------------------------------------------
-## 6. MEDIAS AJUSTADAS E COMPARACOES POST-HOC (EMMEANS) ------------------------
+## 6. MEDIAS AJUSTADAS E COMPARACOES POST-HOC (EMMEANS)
 ## emmeans calcula as "estimated marginal means": as medias previstas pelo
 ## modelo para cada combinacao de Grupo, Momento e Tempo, ja levando em
 ## conta toda a estrutura do modelo misto.
@@ -262,7 +234,8 @@ cat("\n=== Momento (Pre vs Pos), dentro de cada Grupo ===\n")
 print(pairs(comparacao_momento_por_grupo, adjust = "holm"))
 # adjust = "holm" corrige os valores de p para o fato de estarmos fazendo
 # mais de uma comparacao na mesma analise, evitando inflar a taxa de erro
-# Tipo I (metodo de Holm, um pouco menos conservador que o de Bonferroni)
+# Tipo I (metodo de Holm, um pouco menos conservador que o de Bonferroni) 
+# para mudar isso é so mudar dentro da função
 
 # comparacao 2: Grupo A vs Grupo B, dentro de cada Momento separadamente.
 # So faz sentido reportar isto se Grupo:Momento deu significativo
@@ -279,7 +252,7 @@ print(pairs(comparacao_grupo_por_tempo, adjust = "holm"))
 
 
 #-------------------------------------------------------------------------------
-## 7. GRAFICOS DAS MEDIAS AJUSTADAS ---------------------------------------------
+## 7. GRAFICOS DAS MEDIAS AJUSTADAS
 ## emmip() desenha as medias ajustadas com barras de erro (intervalo de
 ## confianca de 95%). Com 3 fatores, geralmente e util olhar mais de uma
 ## combinacao de eixos para entender a interacao tripla.
@@ -305,7 +278,7 @@ print(grafico_momento_tempo_por_grupo)
 
 
 #-------------------------------------------------------------------------------
-## PARA ADAPTAR ESTE SCRIPT PARA OS SEUS PROPRIOS DADOS -------------------------
+## PARA ADAPTAR ESTE SCRIPT PARA OS SEUS PROPRIOS DADOS 
 ## 1. Troque a secao 1 (dados ficticios) por uma leitura de dados real, por
 ##    exemplo:
 ##      dados <- readxl::read_excel("dados/minha-planilha.xlsx")
